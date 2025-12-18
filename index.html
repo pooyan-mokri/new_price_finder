@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheMoak Price Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(57, 73, 171, 0.3);
+        }
+
+        .logo-inner {
+            width: 90px;
+            height: 90px;
+            background: #AFFFB4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-square {
+            width: 50px;
+            height: 50px;
+            background: #3949AB;
+            border-radius: 12px;
+        }
+
+        h1 {
+            color: #3949AB;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .search-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 25px;
+            font-size: 1.2em;
+            border: 3px solid #3949AB;
+            border-radius: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        .search-input:focus {
+            border-color: #AFFFB4;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(175, 255, 180, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #3949AB;
+            font-size: 1.5em;
+        }
+
+        .results-count {
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-color: #AFFFB4;
+        }
+
+        .product-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #3949AB;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #AFFFB4;
+        }
+
+        .product-price {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: #000;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .price-label {
+            font-size: 0.6em;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .attributes {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .attribute {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-right: 4px solid #3949AB;
+        }
+
+        .attribute-name {
+            font-weight: 600;
+            color: #3949AB;
+            min-width: 100px;
+            margin-left: 10px;
+        }
+
+        .attribute-value {
+            color: #333;
+            flex: 1;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .no-results-icon {
+            font-size: 4em;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .no-results-text {
+            font-size: 1.3em;
+            color: #999;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #3949AB;
+            font-size: 1.2em;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #AFFFB4;
+            color: #3949AB;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .results-container {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .logo-inner {
+                width: 75px;
+                height: 75px;
+            }
+
+            .logo-square {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-inner">
+                        <div class="logo-square"></div>
+                    </div>
+                </div>
+            </div>
+            <h1>TheMoak Price Finder</h1>
+            <p class="subtitle">
+                <span class="status-badge" id="offlineStatus">آنلاین</span>
+                جستجوی سریع محصولات
+            </p>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input
+                    type="text"
+                    class="search-input"
+                    id="searchInput"
+                    placeholder="نام محصول را وارد کنید..."
+                    autocomplete="off"
+                />
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="results-count" id="resultsCount"></div>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="loading">در حال بارگذاری داده‌ها...</div>
+        </div>
+    </div>
+
+    <script>
+        let productsData = [];
+        const STORAGE_KEY = 'themoak_products';
+        const VERSION_KEY = 'themoak_data_version';
+        const CURRENT_VERSION = '1.0';
+
+        // Check online/offline status
+        function updateOnlineStatus() {
+            const statusBadge = document.getElementById('offlineStatus');
+            if (navigator.onLine) {
+                statusBadge.textContent = 'آنلاین';
+                statusBadge.style.background = '#AFFFB4';
+                statusBadge.style.color = '#3949AB';
+            } else {
+                statusBadge.textContent = 'آفلاین';
+                statusBadge.style.background = '#ff9800';
+                statusBadge.style.color = 'white';
+            }
+        }
+
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+
+        // Parse CSV data
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const products = [];
+
+            // Skip header row
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                // Parse CSV with proper handling of quoted fields
+                const fields = [];
+                let currentField = '';
+                let inQuotes = false;
+
+                for (let j = 0; j < line.length; j++) {
+                    const char = line[j];
+                    const nextChar = line[j + 1];
+
+                    if (char === '"') {
+                        if (inQuotes && nextChar === '"') {
+                            currentField += '"';
+                            j++; // Skip next quote
+                        } else {
+                            inQuotes = !inQuotes;
+                        }
+                    } else if (char === ',' && !inQuotes) {
+                        fields.push(currentField.trim());
+                        currentField = '';
+                    } else {
+                        currentField += char;
+                    }
+                }
+                fields.push(currentField.trim());
+
+                if (fields.length >= 2 && fields[0] && fields[1]) {
+                    const product = {
+                        name: fields[0],
+                        price: parseInt(fields[1]) || 0,
+                        attributes: []
+                    };
+
+                    // Parse attributes (5 sets of 4 fields each)
+                    for (let j = 0; j < 5; j++) {
+                        const baseIndex = 2 + (j * 4);
+                        if (baseIndex < fields.length) {
+                            const attrName = fields[baseIndex];
+                            const attrValue = fields[baseIndex + 1];
+
+                            if (attrName && attrValue) {
+                                product.attributes.push({
+                                    name: attrName,
+                                    value: attrValue
+                                });
+                            }
+                        }
+                    }
+
+                    products.push(product);
+                }
+            }
+
+            return products;
+        }
+
+        // Format price with thousand separators
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Display products
+        function displayProducts(products) {
+            const container = document.getElementById('resultsContainer');
+            const resultsCount = document.getElementById('resultsCount');
+
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <div class="no-results-text">محصولی یافت نشد</div>
+                    </div>
+                `;
+                resultsCount.textContent = '';
+                return;
+            }
+
+            resultsCount.textContent = `${products.length} محصول یافت شد`;
+
+            container.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-price">
+                        <span class="price-label">قیمت: </span>
+                        ${formatPrice(product.price)} تومان
+                    </div>
+                    ${product.attributes.length > 0 ? `
+                        <div class="attributes">
+                            ${product.attributes.map(attr => `
+                                <div class="attribute">
+                                    <span class="attribute-name">${attr.name}:</span>
+                                    <span class="attribute-value">${attr.value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Search products
+        function searchProducts(query) {
+            if (!query.trim()) {
+                displayProducts(productsData);
+                return;
+            }
+
+            const searchTerm = query.toLowerCase().trim();
+            const filtered = productsData.filter(product => {
+                // Search in product name
+                if (product.name.toLowerCase().includes(searchTerm)) {
+                    return true;
+                }
+
+                // Search in attributes
+                return product.attributes.some(attr =>
+                    attr.name.toLowerCase().includes(searchTerm) ||
+                    attr.value.toLowerCase().includes(searchTerm)
+                );
+            });
+
+            displayProducts(filtered);
+        }
+
+        // Save data to localStorage
+        function saveToLocalStorage(data) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                localStorage.setItem(VERSION_KEY, CURRENT_VERSION);
+                console.log('Data saved to localStorage');
+            } catch (e) {
+                console.error('Failed to save to localStorage:', e);
+            }
+        }
+
+        // Load data from localStorage
+        function loadFromLocalStorage() {
+            try {
+                const version = localStorage.getItem(VERSION_KEY);
+                if (version !== CURRENT_VERSION) {
+                    console.log('Data version mismatch, will reload');
+                    return null;
+                }
+
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    return JSON.parse(data);
+                }
+            } catch (e) {
+                console.error('Failed to load from localStorage:', e);
+            }
+            return null;
+        }
+
+        // Load CSV file
+        async function loadCSV() {
+            try {
+                // Try to load from localStorage first
+                const cachedData = loadFromLocalStorage();
+                if (cachedData && cachedData.length > 0) {
+                    console.log('Loaded data from localStorage');
+                    productsData = cachedData;
+                    displayProducts(productsData);
+
+                    // Try to fetch fresh data in background
+                    fetchAndUpdateCSV();
+                    return;
+                }
+
+                // If no cached data, fetch from file
+                await fetchAndUpdateCSV();
+
+            } catch (error) {
+                console.error('Error loading CSV:', error);
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">⚠️</div>
+                        <div class="no-results-text">خطا در بارگذاری داده‌ها</div>
+                    </div>
+                `;
+            }
+        }
+
+        async function fetchAndUpdateCSV() {
+            try {
+                const response = await fetch('new.csv');
+                if (!response.ok) throw new Error('Failed to fetch CSV');
+
+                const csvText = await response.text();
+                productsData = parseCSV(csvText);
+
+                // Save to localStorage
+                saveToLocalStorage(productsData);
+
+                displayProducts(productsData);
+            } catch (error) {
+                console.log('Could not fetch fresh data:', error);
+                // If we already have cached data, that's okay
+                if (productsData.length === 0) {
+                    throw error;
+                }
+            }
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCSV();
+
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                searchProducts(e.target.value);
+            });
+
+            // Focus on search input
+            searchInput.focus();
+        });
+    </script>
+</body>
+</html>
