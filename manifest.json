@@ -1,0 +1,15 @@
+{
+  "name": "TheMoak Price Finder",
+  "short_name": "TheMoak",
+  "description": "جستجوی سریع قیمت محصولات TheMoak",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3949AB",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "fa",
+  "icons": [],
+  "categories": ["shopping", "business"],
+  "screenshots": []
+}

@@ -2,8 +2,13 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3949AB">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TheMoak">
     <title>TheMoak Price Finder</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -12,48 +17,51 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: 'Space Mono', monospace;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            background: #f5f5f5;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%);
+            padding: 20px 15px 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo-container {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .logo {
-            width: 120px;
-            height: 120px;
+            width: 80px;
+            height: 80px;
             margin: 0 auto;
-            background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 100%);
+            background: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 20px rgba(57, 73, 171, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .logo-inner {
-            width: 90px;
-            height: 90px;
+            width: 62px;
+            height: 62px;
             background: #AFFFB4;
             border-radius: 50%;
             display: flex;
@@ -62,30 +70,46 @@
         }
 
         .logo-square {
-            width: 50px;
-            height: 50px;
+            width: 36px;
+            height: 36px;
             background: #3949AB;
-            border-radius: 12px;
+            border-radius: 10px;
         }
 
         h1 {
-            color: #3949AB;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            color: white;
+            font-size: 1.5em;
+            margin-bottom: 8px;
             font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .subtitle {
-            color: #666;
-            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 0.75em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #AFFFB4;
+            color: #3949AB;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 700;
         }
 
         .search-container {
             background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 169px;
+            z-index: 90;
         }
 
         .search-box {
@@ -94,154 +118,172 @@
 
         .search-input {
             width: 100%;
-            padding: 20px 25px;
-            font-size: 1.2em;
-            border: 3px solid #3949AB;
-            border-radius: 15px;
+            padding: 16px 50px 16px 20px;
+            font-size: 1em;
+            border: 2px solid #3949AB;
+            border-radius: 12px;
             outline: none;
             transition: all 0.3s ease;
             background: #f9f9f9;
+            font-family: 'Space Mono', monospace;
         }
 
         .search-input:focus {
             border-color: #AFFFB4;
             background: white;
-            box-shadow: 0 0 0 4px rgba(175, 255, 180, 0.2);
+            box-shadow: 0 0 0 3px rgba(175, 255, 180, 0.3);
         }
 
         .search-icon {
             position: absolute;
-            left: 20px;
+            left: 18px;
             top: 50%;
             transform: translateY(-50%);
-            color: #3949AB;
-            font-size: 1.5em;
+            font-size: 1.4em;
+            pointer-events: none;
         }
 
         .results-count {
-            margin-top: 15px;
+            margin-top: 10px;
             color: #666;
-            font-size: 0.95em;
+            font-size: 0.8em;
+            text-align: center;
         }
 
         .results-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .product-card {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             border: 2px solid transparent;
         }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        .product-card:active {
+            transform: scale(0.98);
             border-color: #AFFFB4;
         }
 
         .product-name {
-            font-size: 1.4em;
+            font-size: 1.15em;
             font-weight: 700;
             color: #3949AB;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             border-bottom: 3px solid #AFFFB4;
+            font-family: 'Space Mono', monospace;
         }
 
         .product-price {
-            font-size: 1.8em;
+            font-size: 1.5em;
             font-weight: 800;
             color: #000;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             font-family: 'Vazirmatn', sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .price-label {
-            font-size: 0.6em;
+            font-size: 0.55em;
             color: #666;
-            font-weight: 400;
+            font-weight: 600;
             font-family: 'Vazirmatn', sans-serif;
         }
 
         .attributes {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .attribute {
             display: flex;
-            align-items: center;
-            padding: 10px;
+            align-items: flex-start;
+            padding: 12px;
             background: #f9f9f9;
-            border-radius: 8px;
+            border-radius: 10px;
             border-right: 4px solid #3949AB;
         }
 
         .attribute-name {
-            font-weight: 600;
+            font-weight: 700;
             color: #3949AB;
-            min-width: 100px;
-            margin-left: 10px;
+            min-width: 70px;
+            margin-left: 12px;
             font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.9em;
         }
 
         .attribute-value {
             color: #333;
             flex: 1;
             font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.9em;
+            line-height: 1.4;
         }
 
         .no-results {
             text-align: center;
             padding: 60px 20px;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .no-results-icon {
-            font-size: 4em;
-            color: #ddd;
-            margin-bottom: 20px;
+            font-size: 3.5em;
+            margin-bottom: 15px;
         }
 
         .no-results-text {
-            font-size: 1.3em;
+            font-size: 1.1em;
             color: #999;
         }
 
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 40px 20px;
             color: #3949AB;
-            font-size: 1.2em;
+            font-size: 1em;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            background: #AFFFB4;
-            color: #3949AB;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 600;
-            margin-right: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .results-container {
-                grid-template-columns: 1fr;
+        /* Tablet and larger */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
             }
 
-            h1 {
-                font-size: 1.8em;
+            .header {
+                border-radius: 20px;
+                position: relative;
+                top: auto;
+            }
+
+            .search-container {
+                border-radius: 20px;
+                padding: 25px;
+                position: relative;
+                top: auto;
+                margin-top: 20px;
+            }
+
+            .results-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                gap: 20px;
+                padding: 20px 0;
             }
 
             .logo {
@@ -255,8 +297,61 @@
             }
 
             .logo-square {
-                width: 40px;
-                height: 40px;
+                width: 42px;
+                height: 42px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 0.9em;
+            }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+                border-color: #AFFFB4;
+            }
+
+            .product-card:active {
+                transform: translateY(-3px);
+            }
+
+            .container {
+                max-width: 1200px;
+            }
+        }
+
+        /* Desktop */
+        @media (min-width: 1024px) {
+            .logo {
+                width: 120px;
+                height: 120px;
+            }
+
+            .logo-inner {
+                width: 90px;
+                height: 90px;
+            }
+
+            .logo-square {
+                width: 50px;
+                height: 50px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .search-input {
+                font-size: 1.2em;
+                padding: 20px 55px 20px 25px;
             }
         }
     </style>
@@ -303,6 +398,13 @@
         const VERSION_KEY = 'themoak_data_version';
         const CURRENT_VERSION = '1.0';
 
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {
+                console.log('Service Worker registration failed');
+            });
+        }
+
         // Check online/offline status
         function updateOnlineStatus() {
             const statusBadge = document.getElementById('offlineStatus');
@@ -326,12 +428,10 @@
             const lines = csvText.trim().split('\n');
             const products = [];
 
-            // Skip header row
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue;
 
-                // Parse CSV with proper handling of quoted fields
                 const fields = [];
                 let currentField = '';
                 let inQuotes = false;
@@ -343,7 +443,7 @@
                     if (char === '"') {
                         if (inQuotes && nextChar === '"') {
                             currentField += '"';
-                            j++; // Skip next quote
+                            j++;
                         } else {
                             inQuotes = !inQuotes;
                         }
@@ -363,7 +463,6 @@
                         attributes: []
                     };
 
-                    // Parse attributes (5 sets of 4 fields each)
                     for (let j = 0; j < 5; j++) {
                         const baseIndex = 2 + (j * 4);
                         if (baseIndex < fields.length) {
@@ -386,12 +485,10 @@
             return products;
         }
 
-        // Format price with thousand separators
         function formatPrice(price) {
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        // Display products
         function displayProducts(products) {
             const container = document.getElementById('resultsContainer');
             const resultsCount = document.getElementById('resultsCount');
@@ -413,7 +510,7 @@
                 <div class="product-card">
                     <div class="product-name">${product.name}</div>
                     <div class="product-price">
-                        <span class="price-label">قیمت: </span>
+                        <span class="price-label">قیمت</span>
                         ${formatPrice(product.price)} تومان
                     </div>
                     ${product.attributes.length > 0 ? `
@@ -430,7 +527,6 @@
             `).join('');
         }
 
-        // Search products
         function searchProducts(query) {
             if (!query.trim()) {
                 displayProducts(productsData);
@@ -439,12 +535,9 @@
 
             const searchTerm = query.toLowerCase().trim();
             const filtered = productsData.filter(product => {
-                // Search in product name
                 if (product.name.toLowerCase().includes(searchTerm)) {
                     return true;
                 }
-
-                // Search in attributes
                 return product.attributes.some(attr =>
                     attr.name.toLowerCase().includes(searchTerm) ||
                     attr.value.toLowerCase().includes(searchTerm)
@@ -454,26 +547,21 @@
             displayProducts(filtered);
         }
 
-        // Save data to localStorage
         function saveToLocalStorage(data) {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
                 localStorage.setItem(VERSION_KEY, CURRENT_VERSION);
-                console.log('Data saved to localStorage');
             } catch (e) {
                 console.error('Failed to save to localStorage:', e);
             }
         }
 
-        // Load data from localStorage
         function loadFromLocalStorage() {
             try {
                 const version = localStorage.getItem(VERSION_KEY);
                 if (version !== CURRENT_VERSION) {
-                    console.log('Data version mismatch, will reload');
                     return null;
                 }
-
                 const data = localStorage.getItem(STORAGE_KEY);
                 if (data) {
                     return JSON.parse(data);
@@ -484,24 +572,16 @@
             return null;
         }
 
-        // Load CSV file
         async function loadCSV() {
             try {
-                // Try to load from localStorage first
                 const cachedData = loadFromLocalStorage();
                 if (cachedData && cachedData.length > 0) {
-                    console.log('Loaded data from localStorage');
                     productsData = cachedData;
                     displayProducts(productsData);
-
-                    // Try to fetch fresh data in background
                     fetchAndUpdateCSV();
                     return;
                 }
-
-                // If no cached data, fetch from file
                 await fetchAndUpdateCSV();
-
             } catch (error) {
                 console.error('Error loading CSV:', error);
                 document.getElementById('resultsContainer').innerHTML = `
@@ -520,31 +600,21 @@
 
                 const csvText = await response.text();
                 productsData = parseCSV(csvText);
-
-                // Save to localStorage
                 saveToLocalStorage(productsData);
-
                 displayProducts(productsData);
             } catch (error) {
-                console.log('Could not fetch fresh data:', error);
-                // If we already have cached data, that's okay
                 if (productsData.length === 0) {
                     throw error;
                 }
             }
         }
 
-        // Initialize app
         document.addEventListener('DOMContentLoaded', () => {
             loadCSV();
-
             const searchInput = document.getElementById('searchInput');
             searchInput.addEventListener('input', (e) => {
                 searchProducts(e.target.value);
             });
-
-            // Focus on search input
-            searchInput.focus();
         });
     </script>
 </body>
